@@ -2,6 +2,9 @@ package com.airtonm4.world.Punter;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,8 +13,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.airtonm4.world.Games.Game;
+
 @RestController
 public class PunterController {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private PunterRepository repository;
 
@@ -24,9 +32,12 @@ public class PunterController {
         return repository.findAll();
     }
 
-    @PostMapping("/api/punter")
-    Punter newPunter(@RequestBody Punter newPunter) {
-        return this.repository.save(newPunter);
+    @GetMapping("/api/punter-by-game/{id}")
+    List<Punter> getByGame(@PathVariable Long id) {
+        List<Punter> punters = entityManager
+                .createQuery("select p from Punter p, Game g where g.id = :p and p.game = g").setParameter("p", id)
+                .getResultList();
+        return punters;
     }
 
     @GetMapping("/api/punter/{id}")
@@ -34,9 +45,21 @@ public class PunterController {
         return repository.findById(id).orElse(null);
     }
 
+    @PostMapping("/api/punter/{id}")
+    String newPunter(@PathVariable Long id, @RequestBody Punter newPunter) {
+
+        Game game = entityManager.getReference(Game.class, id);
+
+        Punter punter = new Punter(newPunter.getName(), newPunter.getGuess(), newPunter.getPaid(), game);
+
+        this.repository.save(punter);
+
+        return "sucess";
+    }
+
     @DeleteMapping("/api/punter/{id}")
     void deletePunter(@PathVariable Long id) {
-        repository.deleteById(id);
+        entityManager.createQuery("delete from Punter p, Game g where p = g");
     }
 
     @DeleteMapping("/api/punter/all")
@@ -49,6 +72,8 @@ public class PunterController {
         return repository.findById(id)
                 .map(punter -> {
                     punter.setName(newPunter.getName());
+                    punter.setGuess(newPunter.getGuess());
+                    punter.setPaid(newPunter.getPaid());
                     return repository.save(punter);
                 })
                 .orElseGet(() -> {
