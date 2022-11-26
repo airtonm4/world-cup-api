@@ -39,6 +39,16 @@ public class Game {
         this.secondTeam = secondTeam;
     }
 
+    public void addPunter(Punter newPunter) {
+        punters.add(newPunter);
+        newPunter.setGame(this);
+    }
+
+    public void removePunter(Punter newPunter) {
+        punters.remove(newPunter);
+        newPunter.setGame(null);
+    }
+
     public void setId(Long id) {
         this.id = id;
     }

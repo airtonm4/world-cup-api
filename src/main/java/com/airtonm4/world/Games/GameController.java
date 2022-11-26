@@ -25,19 +25,19 @@ public class GameController {
         this.gameRepository = gameRepository;
     }
 
-    @GetMapping("/api/games/all")
+    @GetMapping("/api/games")
     List<Game> gamesWithoutPunters() {
         return gameRepository.findAll();
-    }
-
-    @PostMapping("/api/game")
-    Game newGame(@RequestBody Game newGame) {
-        return this.gameRepository.save(newGame);
     }
 
     @GetMapping("/api/game/{id}")
     Game oneGame(@PathVariable Long id) {
         return this.gameRepository.findById(id).orElse(null);
+    }
+
+    @PostMapping("/api/game")
+    Game newGame(@RequestBody Game newGame) {
+        return this.gameRepository.save(newGame);
     }
 
     @DeleteMapping("/api/game/{id}")
@@ -51,6 +51,7 @@ public class GameController {
                 .map(game -> {
                     game.setFirstTeam(newGame.getFirstTeam());
                     game.setSecondTeam(newGame.getSecondTeam());
+                    game.setResult(newGame.getResult());
                     return gameRepository.save(game);
                 })
                 .orElseGet(() -> {
