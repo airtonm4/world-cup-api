@@ -23,16 +23,21 @@ public class Punter {
 
     @ManyToOne()
     @JoinColumn(name = "game_id", nullable = false)
-    private Game games;
+    private Game game;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "guess", nullable = false)
+    private String guess;
 
     public Punter() {
     }
 
-    public Punter(String name) {
+    public Punter(String name, String guess, Game game) {
         this.name = name;
+        this.guess = guess;
+        this.game = game;
     }
 
     @Override
@@ -56,6 +61,14 @@ public class Punter {
         this.id = id;
     }
 
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
     public String getName() {
         return name;
     }
@@ -64,11 +77,22 @@ public class Punter {
         this.name = name;
     }
 
+    public String getGuess() {
+        return guess;
+    }
+
+    public void setGuess(String guess) {
+        this.guess = guess;
+    }
+
     @Override
     public String toString() {
         return "Punter{" +
-                "id=" + id +
-                ", name=" + name +
+                "id= " + id +
+                ", name= " + name +
+                ", guess= " + guess +
+                ", in game= " + game.getFirstTeam() +
+                " vs " + game.getSecondTeam() +
                 "}";
 
     }

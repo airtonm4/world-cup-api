@@ -19,13 +19,16 @@ public class Game {
     @Column(name = "id")
     private @Id @GeneratedValue Long id;
 
-    @Column(name = "firstTeam")
+    @Column(name = "firstTeam", nullable = false)
     private String firstTeam;
 
-    @Column(name = "secondTeam")
+    @Column(name = "secondTeam", nullable = false)
     private String secondTeam;
 
-    @OneToMany(mappedBy = "games")
+    @Column(name = "result")
+    private String result;
+
+    @OneToMany(mappedBy = "game")
     private Set<Punter> punters;
 
     public Game() {
@@ -42,6 +45,14 @@ public class Game {
 
     public Long getId() {
         return id;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public String getResult() {
+        return result;
     }
 
     public void setFirstTeam(String firstTeam) {
@@ -78,8 +89,9 @@ public class Game {
     public String toString() {
         return "Game{" +
                 "id=" + id +
-                ", firstTeam" + firstTeam +
-                " vs " + secondTeam;
+                ", " + firstTeam +
+                " vs " + secondTeam +
+                "}";
 
     }
 
