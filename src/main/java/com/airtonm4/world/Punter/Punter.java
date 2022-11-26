@@ -2,13 +2,30 @@ package com.airtonm4.world.Punter;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.airtonm4.world.Games.Game;
 
 @Entity
+@Table(name = "punters")
 public class Punter {
-    private @Id @GeneratedValue Long id;
+
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
+    private Long id;
+
+    @ManyToOne()
+    @JoinColumn(name = "game_id", nullable = false)
+    private Game games;
+
+    @Column(name = "name")
     private String name;
 
     public Punter() {

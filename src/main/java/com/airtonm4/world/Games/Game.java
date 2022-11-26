@@ -1,19 +1,32 @@
 package com.airtonm4.world.Games;
 
 import java.util.Objects;
+import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.airtonm4.world.Punter.Punter;
 
 @Entity
 @Table(name = "games")
 public class Game {
 
+    @Column(name = "id")
     private @Id @GeneratedValue Long id;
+
+    @Column(name = "firstTeam")
     private String firstTeam;
+
+    @Column(name = "secondTeam")
     private String secondTeam;
+
+    @OneToMany(mappedBy = "games")
+    private Set<Punter> punters;
 
     public Game() {
     }
