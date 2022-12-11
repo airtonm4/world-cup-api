@@ -45,7 +45,7 @@ public class GameController {
         gameRepository.deleteById(id);
     }
 
-    @PutMapping("/api/game/")
+    @PutMapping("/api/game/{id}")
     Game replacePunter(@RequestBody Game newGame, @PathVariable Long id) {
         return gameRepository.findById(id)
                 .map(game -> {

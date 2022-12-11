@@ -68,7 +68,7 @@ public class PunterController {
         repository.deleteAll();
     }
 
-    @PutMapping("/api/punter/")
+    @PutMapping("/api/punter/{id}")
     Punter replacePunter(@RequestBody Punter newPunter, @PathVariable Long id) {
         return repository.findById(id)
                 .map(punter -> {
