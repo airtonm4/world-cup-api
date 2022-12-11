@@ -59,7 +59,8 @@ public class PunterController {
 
     @DeleteMapping("/api/punter/{id}")
     void deletePunter(@PathVariable Long id) {
-        entityManager.createQuery("delete from Punter p, Game g where p = g");
+        // entityManager.createQuery("delete from Punter p Game g where p = g");
+        repository.deleteById(id);
     }
 
     @DeleteMapping("/api/punter/all")
