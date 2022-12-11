@@ -105,6 +105,7 @@ public class Punter {
                 ", guess= " + guess +
                 ", in game= " + game.getFirstTeam() +
                 " vs " + game.getSecondTeam() +
+                ", paid=" + paid +
                 "}";
 
     }
